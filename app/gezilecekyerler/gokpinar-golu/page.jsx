@@ -1,4 +1,4 @@
-import * as mysql from 'mysql'
+const mysql = require('mysql2');
 export default async function SugulVadisi(){
     var pool  = mysql.createPool({
         connectionLimit: 10,
@@ -58,7 +58,7 @@ export default async function SugulVadisi(){
                      <header>
                         <h1 className='text-2xl font-bold'>{reslt[0].title}</h1>
                     </header>
-                {absAry.map(parag => <p className='py-3 tracking-wide'>{parag}</p>)}
+                {absAry.map((parag, i) => <p key={i} className='py-3 tracking-wide'>{parag}</p>)}
                 </div>
             </article>
        </section> 

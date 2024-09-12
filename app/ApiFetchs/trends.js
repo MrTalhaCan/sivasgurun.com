@@ -1,4 +1,4 @@
-import * as mysql from 'mysql'
+const mysql = require('mysql2');
 import cron from 'node-cron';
 export default async function Trends() {
     var pool  = mysql.createPool({
@@ -49,11 +49,11 @@ export default async function Trends() {
         }
     )}   
     const reslt = await getTrends()
-    .then(data => {
-        const sub   =   data[0].results.substr(1, data[0].results.length - 2)
+    .then(data => { return data[0].results
+        /* const sub   =   data[0].results.substr(1, data[0].results.length - 2)
         const endAry = sub.split(",")
         const noDoublequote = endAry.map(element => element.replace(/["']/g, "").trim());
-        return noDoublequote
+        return noDoublequote */
     })
     .catch(function(err){
     console.log("Promise rejection error: "+err);

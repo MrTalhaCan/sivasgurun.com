@@ -1,7 +1,7 @@
 import axios from "axios";
 import Slider from './gurunBelSlider';
 const cheerio = require('cheerio');  // new addition
-import * as mysql from 'mysql'
+const mysql = require('mysql2');
 import cron from 'node-cron'
 export default async function GurunBel() {
     var pool  = mysql.createPool({
@@ -53,14 +53,11 @@ export default async function GurunBel() {
                     }
                 )
             })
-        }
-    )}
+        })
+    }
         
     const reslt = await getBelediyeData()
-    .then(data => {
-		const cnvJSON = JSON.parse(data[0].results)
-        return cnvJSON
-    })
+    .then(data => { return data[0].results })
     .catch(function(err){
     console.log("Promise rejection error: "+err);
     })

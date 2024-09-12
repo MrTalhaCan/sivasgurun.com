@@ -25,8 +25,8 @@ export default function Slider(prms){
             className="mySwiper"
           >
         {prms.news.map((news, i) => 
-        <SwiperSlide>
-            <div key={i} className="w-full h-96 relative bg-no-repeat bg-cover" style={{backgroundImage: `url(${news.img})`}}>
+        <SwiperSlide key={i}>
+            <div className="w-full h-96 relative bg-no-repeat bg-cover" style={{backgroundImage: `url(${news.img})`}}>
                 <div className="absolute bottom-0 p-3 bg-slate-950/75">
                     <h1 className="text-white text-xl font-bold">{news.title}</h1>
                     <p className="text-gray-300 line-clamp-2">{news.description}</p>

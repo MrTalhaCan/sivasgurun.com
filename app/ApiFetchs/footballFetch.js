@@ -1,6 +1,6 @@
 import axios from "axios";
 const cheerio = require('cheerio');  // new addition
-import mysql from 'mysql'
+const mysql = require('mysql2');
 import cron from 'node-cron'
 var iconv = require('iconv-lite');
 export async function FootballSuperLeague() {
@@ -122,15 +122,13 @@ export async function FootballSuperLeague() {
     )}
     const reslt = await getLeagueDatas()
     .then(data => {
-		const cnvJSON = JSON.parse(data[0].results)
+		const rawTeam	=	data[0].results;
 		const newTeamScore	=	[];
-		for (let index = 0; index < cnvJSON.length; index++) {
-			const brokenTeam = cnvJSON[index].team;
-			const clnTeam	=	brokenTeam.split('.');
-			const clnTeamP1	=	clnTeam[1];
-			const clnTeamP2	=	clnTeam[2] == undefined ? '' : `.${clnTeam[2]}.`;
-			const absTeam	=	teamCharsCorrection(`${clnTeamP1}${clnTeamP2}`);
-			newTeamScore.push({...cnvJSON[index], "team": absTeam})
+		for (let index = 0; index < rawTeam.length; index++) {
+			const brokenTeam = rawTeam[index].team;
+			const clnTeam	=	brokenTeam.substr(2);
+			const absTeam	=	teamCharsCorrection(clnTeam);
+			newTeamScore.push({...rawTeam[index], "team": absTeam})
 		}
 		return newTeamScore
     })
