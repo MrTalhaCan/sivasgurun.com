@@ -1,0 +1,51 @@
+import { Pool } from "@/app/ApiFetchs/pool";
+import WeatherMainPanel from "@/app/ApiFetchs/currentWeather/currentWthCompnnt";
+import Image from 'next/image';
+import {weatherData} from "./../wthrApiBridge"
+export const metadata = {
+  title: "Sivas Gürün - Güldede Köyü Hava Durumu",
+  description: "Güldede köyünün güncel hava durumu ve 3 günlük hava tahmin raporu. Anlık sıcaklık, hissedilen sıcaklık, yağmur olasılığı ve rüzgar bilgileriyle doğru ve hızlı hava durumu verilerine ulaşın.",
+openGraph: {
+    title: "Sivas Gürün - Güldede Köyü Hava Durumu",
+    description:
+      "Gürün Güldede köyünün güncel hava durumu ve 3 günlük hava tahmin raporu.",
+    url: "https://sivasgurun.com/hava-durumu/koyler/gurun/gurun-guldede-koyu-hava-durumu",
+    siteName: "sivasgurun.com",
+    images: [
+      {
+        url: "https://sivasgurun.com/hava-durumu.webp",
+        width: 1280,
+        height: 720,
+        alt: "Gürün Güldede Köyü Hava Durumu",
+      },
+    ],
+    locale: "tr_TR",
+    type: "website",
+  },
+};
+export default async function HavaDurumu(){
+const reslt = await weatherData(36);
+const wthrIconsDir = "hava-durumu";
+    const weatherIcns = [];
+    const cropIconDir = (inDir) => {
+	 const iconUrlSplt = inDir.split("/");
+	 const  wthrIcnSubDir= iconUrlSplt[iconUrlSplt.length - 2];
+	 const  wthrIcoName = iconUrlSplt[iconUrlSplt.length - 1].split(".")[0];
+	 return `${wthrIcnSubDir}/${wthrIcoName}`;
+    }
+    for(let i = 0; i < 3; i++){
+	weatherIcns[i+1] = cropIconDir(reslt.forecast.forecast.forecastday[i].condition.icon);
+    }
+	
+    return(
+       <div className="max-w-md mx-auto my-20 p-6 bg-white rounded-2xl shadow-lg dark:bg-slate-800 tracking-wide ring-2">
+  <div className="text-center">
+    <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Güldede Köyü Hava Durumu</h1>
+      <WeatherMainPanel forecastData={reslt.forecast} />
+  </div>
+</div>
+ 
+    )
+}
+// Sayfanın 43200 saniye (12 saat) cache'lenmesini sağla
+export const revalidate = 43200;

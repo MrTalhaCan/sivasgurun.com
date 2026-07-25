@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Spam URL engelleme
+Disallow: /blog
+Disallow: /*?id=*
+Disallow: /*?blog*
+
+Sitemap: https://sivasgurun.com/sitemap.xml
